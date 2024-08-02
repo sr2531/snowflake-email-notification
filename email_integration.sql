@@ -23,7 +23,7 @@ declare
     exception_no_data exception (-20002, 'No Failed Task');
     exception_bad_row exception (-20003, '1 or more tasks have failed in the last hour');    
 begin
-    -- No data
+    -- No failed tasks
     row_cnt := (SELECT count(*)
     FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY(
     SCHEDULED_TIME_RANGE_START=>DATEADD('hour',-1,current_timestamp()),
@@ -43,7 +43,7 @@ begin
         raise exception_no_data;
     end if;
     
-    -- Bad row
+    -- Failed tasks
     row_cnt := (SELECT count(*)
     FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY(
     SCHEDULED_TIME_RANGE_START=>DATEADD('hour',-1,current_timestamp()),
